@@ -1,4 +1,5 @@
 const express = require('express');
+const bcrypt = require('bcryptjs');
 const { body, validationResult } = require('express-validator');
 const router = express.Router();
 const User = require('../models/user')
@@ -23,12 +24,16 @@ async (req,res)=>{
  // using async - await here as many methods are asynchronous i.e. "findOne"
     let user = await User.findOne({email:req.body.email})
   
-    if(user){return res.json({error:"Sorry! a user with this email already exists"})}
-  
+    if(user){return res.status(400).json({error:"Sorry! a user with this email already exists"})}
+
+    // preparing the password security 
+    const salt = await bcrypt.genSalt(10);
+    const secPass = await bcrypt.hash(req.body.password,salt);
+
     // Creating a new user from request body
       user = await User.create({
       name: req.body.name,
-      password: req.body.password,
+      password: secPass,
       email:req.body.email })
   
       res.json(user)
