@@ -3,7 +3,10 @@ const bcrypt = require('bcryptjs');
 const { body, validationResult } = require('express-validator');
 const router = express.Router();
 const User = require('../models/user')
+const jwt = require('jsonwebtoken');
 
+// creating the jwt secret 
+const JWT_SECRET="amit@myboy";
 
 router.post('/createUser',//array of validations
 [
@@ -35,14 +38,23 @@ async (req,res)=>{
       name: req.body.name,
       password: secPass,
       email:req.body.email })
-  
-      res.json(user)
+      
+      // signing in jwt
+      const data = {
+         user:{
+          id:user.id
+         }
+      }
+      const authtoken = jwt.sign(data,JWT_SECRET)
+    
+      res.json({authtoken:authtoken})
   }
   // catching error if there is any in the server
   catch(error){
     console.error(error.message);
     res.status(500).send("Server error")
   }
+
   
 })
 
