@@ -33,7 +33,7 @@ async (req,res)=>{
     const salt = await bcrypt.genSalt(10);
     const secPass = await bcrypt.hash(req.body.password,salt);
 
-    // Creating a new user from request body
+    //------------------- Creating a new user from request body------------------
       user = await User.create({
       name: req.body.name,
       password: secPass,
@@ -54,8 +54,52 @@ async (req,res)=>{
     console.error(error.message);
     res.status(500).send("Server error")
   }
+ 
+})
 
+//---------------------- creating the end point for the user's login--------------------
+router.post('/login',//array of validations
+[
+    body('email','enter a valid email').isEmail(),
+    body('password','password cannot be blank').exists()
+],
+async (req,res)=>{   
+
+  // if there are errors return the errors
+  const result = validationResult(req);
+  if (!result.isEmpty()) {
+    return res.send({ errors: result.array() });
+  }
+
+  try{
   
+  // checking whether user with given email and password exists or not
+  const {email,password} = req.body;
+  const user = await User.findOne({email});
+
+  if(!user){
+    return res.status(400).json({errors:[{msg:'Invalid credentials'} ]});
+  }
+
+  // comparing the passwords 
+  const compPass = await bcrypt.compare(password,user.password)
+  if(!compPass){
+    return res.status(400).json({errors:[{msg:'Invalid credentials'} ]});
+  }
+  // generating token
+  const data = {
+    user:{
+     id:user.id
+    }
+ }
+ const authtoken = jwt.sign(data,JWT_SECRET)
+
+ res.json({authtoken:authtoken})
+  }
+  catch(error){
+    console.error(error.message);
+    res.status(500).send("Server error")
+  }
 })
 
 module.exports = router
