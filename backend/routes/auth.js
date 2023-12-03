@@ -4,10 +4,12 @@ const { body, validationResult } = require('express-validator');
 const router = express.Router();
 const User = require('../models/user')
 const jwt = require('jsonwebtoken');
+const fetchuser = require('../middleware/fetchUser');
 
 // creating the jwt secret 
 const JWT_SECRET="amit@myboy";
 
+// ROUTE 1
 router.post('/createUser',//array of validations
 [
     body('name','Enter a valid name').isLength({min:3}),
@@ -57,6 +59,7 @@ async (req,res)=>{
  
 })
 
+// ROUTE 2:
 //---------------------- creating the end point for the user's login--------------------
 router.post('/login',//array of validations
 [
@@ -102,4 +105,15 @@ async (req,res)=>{
   }
 })
 
+// ROUTE 3: get loggedin user's detail using POST:"api/auth/getuser".Login required
+router.post("/getUser",fetchuser, async (req,res)=> {
+try {
+  const id = req.user.id;
+  const user = await User.findOne({_id: id}).select("-password")
+  res.send(user)
+} catch (error) {
+  console.error(error.message);
+  res.status(500).send("Server error")
+}
+})
 module.exports = router

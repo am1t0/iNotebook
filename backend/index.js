@@ -11,6 +11,7 @@ app.use(express.json())      // middleware for using body of request
 app.get('/', (req, res) => {
   res.send('Hello Amit!')
 })
+
 // Available routes
 app.use('/api/auth',require('./routes/auth'))
 app.use('/api/notes',require('./routes/notes'))
