@@ -1,6 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import NoteContext from '../context/Notes/NoteContext'
 
 export default function Home() {
+  const context = useContext(NoteContext);
+  const {initialNotes,setNotes} = context;
+  {console.log(initialNotes)}
   return (
     <div>
       <div className="container my-3">
@@ -24,6 +28,9 @@ export default function Home() {
 </div>
 <div className="container">
 <h2>Your Notes</h2>
+{initialNotes.map((note)=>{
+  return note.title;
+})}
 </div>
     </div>
   )
