@@ -1,6 +1,7 @@
 import Navbar from './Components/Navbar'
 import About from './Components/About'
 import Home from './Components/Home'
+import NoteState from './context/Notes/NoteState'
 import {
   BrowserRouter as Router,
   Routes,
@@ -11,6 +12,7 @@ import {
 function App() {
   return (
     <>
+    <NoteState>
       <Router>
       <Navbar/>
        <Routes>
@@ -19,6 +21,7 @@ function App() {
        </Routes>
 
       </Router>
+      </NoteState>
     </>
   );
 }
