@@ -16,19 +16,19 @@ export default function AddNote(){
             <div className="container my-3">
                 <h2>Add a note</h2>
                 <form>
-                    <div class="form-group">
+                    <div className="form-group">
                         <label htmlFor="title">Title</label>
-                        <input type="text" class="form-control" id="title" name='title' aria-describedby="emailHelp" onChange={onChange}/>
+                        <input type="text" className="form-control" id="title" name='title' aria-describedby="emailHelp" onChange={onChange}/>
                     </div>
-                    <div class="form-group">
+                    <div className="form-group">
                         <label htmlFor='description'>Description</label>
-                        <input type="text" class="form-control" id="description" name='description' onChange={onChange}/>
+                        <input type="text" className="form-control" id="description" name='description' onChange={onChange}/>
                     </div>
-                    <div class="form-group form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1" />
-                        <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                    <div className="form-group form-check">
+                        <input type="checkbox" className="form-check-input" id="exampleCheck1" />
+                        <label className="form-check-label" for="exampleCheck1">Check me out</label>
                     </div>
-                    <button type="submit" class="btn btn-primary" onClick={handleOnClick}>Add Note</button>
+                    <button type="submit" className="btn btn-primary" onClick={handleOnClick}>Add Note</button>
                 </form>
             </div>
         </div>
